@@ -1,5 +1,3 @@
-'use babel'
-
 import * as React from 'react'
 import { useCallback } from 'react'
 import PropTypes from 'prop-types'
@@ -7,6 +5,7 @@ import moment from 'moment'
 import classNames from 'classnames'
 
 export default function SimpleNoteListItemView(props) {
+  const NotePinIcon = inkdrop.components.getComponentClass('NotePinIcon')
   const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')
   const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
     'NoteListItemShareStatusView'
@@ -24,6 +23,7 @@ export default function SimpleNoteListItemView(props) {
     share,
     numOfTasks,
     numOfCheckedTasks,
+    pinned,
     tags
   } = note
   const classes = classNames({
@@ -38,7 +38,7 @@ export default function SimpleNoteListItemView(props) {
   const isTask = typeof numOfTasks === 'number' && numOfTasks > 0
 
   const handleClick = useCallback(
-    (e) => {
+    e => {
       onClick && onClick(e, note)
       e.preventDefault()
       e.stopPropagation()
@@ -47,7 +47,7 @@ export default function SimpleNoteListItemView(props) {
   )
 
   const handleDblClick = useCallback(
-    (e) => {
+    e => {
       onDblClick && onDblClick(e, note)
       e.preventDefault()
       e.stopPropagation()
@@ -56,7 +56,7 @@ export default function SimpleNoteListItemView(props) {
   )
 
   const handleContextMenu = useCallback(
-    (e) => {
+    e => {
       onContextMenu && onContextMenu(e, note)
       e.preventDefault()
       e.stopPropagation()
@@ -73,6 +73,7 @@ export default function SimpleNoteListItemView(props) {
     >
       <div className="content">
         <div className="header">
+          {pinned && <NotePinIcon />}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
           {title || 'Untitled'}
