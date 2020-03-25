@@ -1,4 +1,4 @@
-import * as SimpleNoteListItemView from './note-list-item-view';
+import * as SimpleNoteListItemView from './note-list-item-view'
 
 module.exports = {
   activate() {
@@ -8,4 +8,4 @@ module.exports = {
   deactivate() {
     SimpleNoteListItemView.unregisterAsNoteListItemView()
   }
-};
+}

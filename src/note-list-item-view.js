@@ -8,15 +8,18 @@ import classNames from 'classnames'
 
 export default function SimpleNoteListItemView(props) {
   const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')
-  const NoteListItemShareStatusView = inkdrop.components.getComponentClass('NoteListItemShareStatusView')
-  const TaskProgressView = inkdrop.components.getComponentClass('TaskProgressView')
+  const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
+    'NoteListItemShareStatusView'
+  )
+  const TaskProgressView = inkdrop.components.getComponentClass(
+    'TaskProgressView'
+  )
   const TagList = inkdrop.components.getComponentClass('TagList')
-  
+
   const { active, focused, note, onClick, onDblClick, onContextMenu } = props
   const {
     title,
     status,
-    body,
     updatedAt,
     share,
     numOfTasks,
@@ -35,7 +38,7 @@ export default function SimpleNoteListItemView(props) {
   const isTask = typeof numOfTasks === 'number' && numOfTasks > 0
 
   const handleClick = useCallback(
-    e => {
+    (e) => {
       onClick && onClick(e, note)
       e.preventDefault()
       e.stopPropagation()
@@ -44,7 +47,7 @@ export default function SimpleNoteListItemView(props) {
   )
 
   const handleDblClick = useCallback(
-    e => {
+    (e) => {
       onDblClick && onDblClick(e, note)
       e.preventDefault()
       e.stopPropagation()
@@ -53,7 +56,7 @@ export default function SimpleNoteListItemView(props) {
   )
 
   const handleContextMenu = useCallback(
-    e => {
+    (e) => {
       onContextMenu && onContextMenu(e, note)
       e.preventDefault()
       e.stopPropagation()
