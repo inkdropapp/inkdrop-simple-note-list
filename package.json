@@ -1,7 +1,7 @@
 {
   "name": "simple-note-list",
   "main": "./lib/index.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Thinner note list item view",
   "keywords": [],
   "repository": "https://github.com/inkdropapp/inkdrop-simple-note-list",
