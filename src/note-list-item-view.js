@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import classNames from 'classnames'
+
+dayjs.extend(relativeTime)
 
 export default function SimpleNoteListItemView(props) {
   const NotePinIcon = inkdrop.components.getComponentClass('NotePinIcon')
@@ -33,7 +36,7 @@ export default function SimpleNoteListItemView(props) {
     focused,
     task: status !== 'none'
   })
-  const date = moment(updatedAt).fromNow(true)
+  const date = dayjs(updatedAt).fromNow(true)
   const taskState = status ? `task-${status}` : ''
   const isTask = typeof numOfTasks === 'number' && numOfTasks > 0
 
