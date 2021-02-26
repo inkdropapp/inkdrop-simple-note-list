@@ -8,7 +8,6 @@ import classNames from 'classnames'
 dayjs.extend(relativeTime)
 
 export default function SimpleNoteListItemView(props) {
-  const NotePinIcon = inkdrop.components.getComponentClass('NotePinIcon')
   const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')
   const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
     'NoteListItemShareStatusView'
@@ -26,7 +25,6 @@ export default function SimpleNoteListItemView(props) {
     share,
     numOfTasks,
     numOfCheckedTasks,
-    pinned,
     tags
   } = note
   const classes = classNames({
@@ -76,7 +74,6 @@ export default function SimpleNoteListItemView(props) {
     >
       <div className="content">
         <div className="header">
-          {pinned && <NotePinIcon />}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
           {title || 'Untitled'}
