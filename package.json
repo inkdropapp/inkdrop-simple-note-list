@@ -14,8 +14,8 @@
     "dev": "babel src/ -s -d lib/ --watch"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "dayjs": "^1.10.4"
+    "classnames": "^2.3.1",
+    "dayjs": "^1.10.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.7",
