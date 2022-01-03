@@ -7,7 +7,7 @@
   "repository": "https://github.com/inkdropapp/inkdrop-simple-note-list",
   "license": "MIT",
   "engines": {
-    "inkdrop": "^4.x"
+    "inkdrop": "^5.x"
   },
   "scripts": {
     "build": "babel src/ -d lib/",
