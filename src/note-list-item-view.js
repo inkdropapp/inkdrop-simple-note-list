@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useCallback } from 'react'
-import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import classNames from 'classnames'
@@ -12,9 +11,8 @@ export default function SimpleNoteListItemView(props) {
   const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
     'NoteListItemShareStatusView'
   )
-  const TaskProgressView = inkdrop.components.getComponentClass(
-    'TaskProgressView'
-  )
+  const TaskProgressView =
+    inkdrop.components.getComponentClass('TaskProgressView')
   const TagList = inkdrop.components.getComponentClass('TagList')
 
   const { active, focused, note, onClick, onDblClick, onContextMenu } = props
@@ -93,15 +91,6 @@ export default function SimpleNoteListItemView(props) {
       </div>
     </div>
   )
-}
-
-SimpleNoteListItemView.propTypes = {
-  active: PropTypes.bool,
-  focused: PropTypes.bool,
-  note: PropTypes.object,
-  onClick: PropTypes.func,
-  onDblClick: PropTypes.func,
-  onContextMenu: PropTypes.func
 }
 
 export function registerAsNoteListItemView() {
