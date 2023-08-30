@@ -58,7 +58,6 @@ export default function SimpleNoteListItemView(props) {
     e => {
       onContextMenu && onContextMenu(e, note)
       e.preventDefault()
-      e.stopPropagation()
     },
     [onContextMenu, note]
   )
