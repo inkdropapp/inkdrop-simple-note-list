@@ -6,6 +6,7 @@ import classNames from 'classnames'
 dayjs.extend(relativeTime)
 
 export default function SimpleNoteListItemView(props) {
+  const StreamlineIcon = inkdrop.components.getComponentClass('StreamlineIcon')
   const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')
   const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
     'NoteListItemShareStatusView'
@@ -30,7 +31,9 @@ export default function SimpleNoteListItemView(props) {
     share,
     numOfTasks,
     numOfCheckedTasks,
-    tags
+    tags,
+    pinned,
+    _conflicts
   } = note
   const classes = classNames({
     'simple-note-list-item-view': true,
@@ -39,7 +42,11 @@ export default function SimpleNoteListItemView(props) {
     focused,
     task: status !== 'none'
   })
-  const date = dayjs(updatedAt).fromNow(true)
+  const fmt = dayjs(updatedAt)
+  const date =
+    updatedAt >= +new Date() - 1000 * 60 * 60 * 24 * 37
+      ? fmt.fromNow(true)
+      : fmt.format('YYYY-MM-DD')
   const taskState = status ? `task-${status}` : ''
   const isTask = typeof numOfTasks === 'number' && numOfTasks > 0
 
@@ -87,6 +94,16 @@ export default function SimpleNoteListItemView(props) {
     >
       <div className="content">
         <div className="header">
+          {_conflicts && (
+            <StreamlineIcon name="warning-bold" className="inline" />
+          )}
+          {pinned && (
+            <StreamlineIcon
+              name="pin-bold"
+              className="inline"
+              color="var(--primary-color)"
+            />
+          )}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
           {title || 'Untitled'}
