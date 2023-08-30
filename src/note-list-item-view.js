@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import classNames from 'classnames'
@@ -15,7 +14,15 @@ export default function SimpleNoteListItemView(props) {
     inkdrop.components.getComponentClass('TaskProgressView')
   const TagList = inkdrop.components.getComponentClass('TagList')
 
-  const { active, focused, note, onClick, onDblClick, onContextMenu } = props
+  const {
+    active,
+    focused,
+    note,
+    onClick,
+    onDblClick,
+    onContextMenu,
+    onMiddleClick
+  } = props
   const {
     title,
     status,
@@ -44,7 +51,6 @@ export default function SimpleNoteListItemView(props) {
     },
     [onClick, note]
   )
-
   const handleDblClick = useCallback(
     e => {
       onDblClick && onDblClick(e, note)
@@ -53,7 +59,16 @@ export default function SimpleNoteListItemView(props) {
     },
     [onDblClick, note]
   )
-
+  const handleMouseDown = useCallback(
+    e => {
+      if (e.button === 1) {
+        onMiddleClick && onMiddleClick(e, note)
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    },
+    [onMiddleClick, note]
+  )
   const handleContextMenu = useCallback(
     e => {
       onContextMenu && onContextMenu(e, note)
@@ -68,6 +83,7 @@ export default function SimpleNoteListItemView(props) {
       onClick={handleClick}
       onContextMenu={handleContextMenu}
       onDoubleClick={handleDblClick}
+      onMouseDown={handleMouseDown}
     >
       <div className="content">
         <div className="header">

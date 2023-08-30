@@ -4,7 +4,6 @@ module.exports = {
   activate() {
     SimpleNoteListItemView.registerAsNoteListItemView()
   },
-
   deactivate() {
     SimpleNoteListItemView.unregisterAsNoteListItemView()
   }
