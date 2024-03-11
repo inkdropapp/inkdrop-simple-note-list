@@ -22,7 +22,8 @@ export default function SimpleNoteListItemView(props) {
     onClick,
     onDblClick,
     onContextMenu,
-    onMiddleClick
+    onMiddleClick,
+    onTagListItemClick
   } = props
   const {
     title,
@@ -95,14 +96,13 @@ export default function SimpleNoteListItemView(props) {
       <div className="content">
         <div className="header">
           {_conflicts && (
-            <StreamlineIcon name="warning-bold" className="inline" />
+            <StreamlineIcon
+              name="warning-bold"
+              className="note-conflicted-icon inline"
+            />
           )}
           {pinned && (
-            <StreamlineIcon
-              name="pin-bold"
-              className="inline"
-              color="var(--primary-color)"
-            />
+            <StreamlineIcon name="pin-bold" className="note-pin-icon inline" />
           )}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
@@ -117,7 +117,7 @@ export default function SimpleNoteListItemView(props) {
                 numOfCheckedTasks={numOfCheckedTasks || 0}
               />
             )}
-            <TagList tagIds={tags} />
+            <TagList tagIds={tags} onClickItem={onTagListItemClick} />
           </div>
         </div>
       </div>
