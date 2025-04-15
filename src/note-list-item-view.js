@@ -8,6 +8,11 @@ dayjs.extend(relativeTime)
 export default function SimpleNoteListItemView(props) {
   const StreamlineIcon = inkdrop.components.getComponentClass('StreamlineIcon')
   const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')
+  const HighlightedText =
+    inkdrop.components.getComponentClass('HighlightedText')
+  const NoteListItemSummaryView = inkdrop.components.getComponentClass(
+    'NoteListItemSummaryView'
+  )
   const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
     'NoteListItemShareStatusView'
   )
@@ -16,6 +21,7 @@ export default function SimpleNoteListItemView(props) {
   const TagList = inkdrop.components.getComponentClass('TagList')
 
   const {
+    listSortKey,
     active,
     focused,
     note,
@@ -26,9 +32,12 @@ export default function SimpleNoteListItemView(props) {
     onTagListItemClick
   } = props
   const {
-    title,
+    _rev,
+    title = 'Untitled',
+    body,
     status,
     updatedAt,
+    createdAt,
     share,
     numOfTasks,
     numOfCheckedTasks,
@@ -36,6 +45,8 @@ export default function SimpleNoteListItemView(props) {
     pinned,
     _conflicts
   } = note
+  const ftsData = note._fts
+
   const classes = classNames({
     'simple-note-list-item-view': true,
     'note-list-item-view': true,
@@ -43,7 +54,8 @@ export default function SimpleNoteListItemView(props) {
     focused,
     task: status !== 'none'
   })
-  const fmt = dayjs(updatedAt)
+  const timestamp = listSortKey === 'createdAt' ? createdAt : updatedAt
+  const fmt = dayjs(timestamp)
   const date =
     updatedAt >= +new Date() - 1000 * 60 * 60 * 24 * 37
       ? fmt.fromNow(true)
@@ -106,7 +118,13 @@ export default function SimpleNoteListItemView(props) {
           )}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
-          {title || 'Untitled'}
+          {ftsData ? (
+            <HighlightedText highlights={ftsData.titleHighlights}>
+              {title}
+            </HighlightedText>
+          ) : (
+            title
+          )}
         </div>
         <div className="description">
           <div className="meta">
@@ -119,6 +137,13 @@ export default function SimpleNoteListItemView(props) {
             )}
             <TagList tagIds={tags} onClickItem={onTagListItemClick} />
           </div>
+          {ftsData && (
+            <NoteListItemSummaryView
+              revId={_rev || ''}
+              body={body}
+              highlights={ftsData?.bodyHighlights}
+            />
+          )}
         </div>
       </div>
     </div>

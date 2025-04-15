@@ -7,7 +7,7 @@
   "repository": "https://github.com/inkdropapp/inkdrop-simple-note-list",
   "license": "MIT",
   "engines": {
-    "inkdrop": "^5.6.0"
+    "inkdrop": "^5.11.2"
   },
   "scripts": {
     "build": "babel -s false src/ -d lib/",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "dayjs": "^1.11.10"
+    "dayjs": "^1.11.13"
   },
   "devDependencies": {
     "@babel/cli": "^7.27.0",
