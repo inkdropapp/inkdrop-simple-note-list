@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.20"
   },
   "devDependencies": {
     "@babel/cli": "^7.27.0",
