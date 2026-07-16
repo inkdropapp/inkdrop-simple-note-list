@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import type { Note } from 'inkdrop-model'
+import type { Note, TemplateBookId } from 'inkdrop-model'
 import type React from 'react'
 import { useCallback } from 'react'
 
 dayjs.extend(relativeTime)
+
+const TEMPLATE_BOOK_ID: TemplateBookId = 'template'
 
 interface HighlightMarkPosition {
   offStart: number
@@ -60,6 +62,7 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
     _rev,
     title = 'Untitled',
     body,
+    bookId,
     status,
     updatedAt,
     createdAt,
@@ -71,12 +74,15 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
     _conflicts
   } = note
   const ftsData = note._fts
+  const isTemplate = bookId === TEMPLATE_BOOK_ID
 
   const classes = classNames({
     'simple-note-list-item-view': true,
     'note-list-item-view': true,
     active,
     focused,
+    'is-template': isTemplate,
+    'is-official-template': isTemplate && !_rev,
     task: status !== 'none'
   })
   const timestamp = listSortKey === 'createdAt' ? createdAt : updatedAt
@@ -146,7 +152,7 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
         </div>
         <div className="description">
           <div className="meta">
-            <span className="date">{date}</span>
+            {!isTemplate && <span className="date">{date}</span>}
             {isTask && (
               <TaskProgressView
                 numOfTasks={numOfTasks || 0}

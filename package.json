@@ -15,7 +15,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@inkdropapp/types": "^0.0.9",
+    "@inkdropapp/types": "^0.0.10",
     "@types/react": "^19.2.17",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.21",
