@@ -1,24 +1,49 @@
-import React, { useCallback } from 'react'
+import classNames from 'classnames'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import classNames from 'classnames'
+import type { Note } from 'inkdrop-model'
+import type React from 'react'
+import { useCallback } from 'react'
 
 dayjs.extend(relativeTime)
 
-export default function SimpleNoteListItemView(props) {
-  const StreamlineIcon = inkdrop.components.getComponentClass('StreamlineIcon')
-  const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')
-  const HighlightedText =
-    inkdrop.components.getComponentClass('HighlightedText')
-  const NoteListItemSummaryView = inkdrop.components.getComponentClass(
-    'NoteListItemSummaryView'
-  )
+interface HighlightMarkPosition {
+  offStart: number
+  offEnd: number
+  line: number
+  chStart: number
+  chEnd: number
+}
+
+interface NoteWithFtsData extends Note {
+  _fts?: {
+    titleHighlights: HighlightMarkPosition[]
+    bodyHighlights: HighlightMarkPosition[]
+  }
+}
+
+interface SimpleNoteListItemViewProps {
+  listSortKey: string
+  note: NoteWithFtsData
+  focused: boolean
+  active: boolean
+  onClick?: (e: React.MouseEvent, note: NoteWithFtsData) => void
+  onMiddleClick?: (e: React.MouseEvent, note: NoteWithFtsData) => void
+  onDblClick?: (e: React.MouseEvent, note: NoteWithFtsData) => void
+  onContextMenu?: (e: React.MouseEvent, note: NoteWithFtsData) => void
+  onTagListItemClick?: (e: React.MouseEvent, tagId: string) => void
+}
+
+export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProps) {
+  const StreamlineIcon = inkdrop.components.getComponentClass('StreamlineIcon')!
+  const NoteStatusIcon = inkdrop.components.getComponentClass('NoteStatusIcon')!
+  const HighlightedText = inkdrop.components.getComponentClass('HighlightedText')!
+  const NoteListItemSummaryView = inkdrop.components.getComponentClass('NoteListItemSummaryView')!
   const NoteListItemShareStatusView = inkdrop.components.getComponentClass(
     'NoteListItemShareStatusView'
-  )
-  const TaskProgressView =
-    inkdrop.components.getComponentClass('TaskProgressView')
-  const TagList = inkdrop.components.getComponentClass('TagList')
+  )!
+  const TaskProgressView = inkdrop.components.getComponentClass('TaskProgressView')!
+  const TagList = inkdrop.components.getComponentClass('TagList')!
 
   const {
     listSortKey,
@@ -64,25 +89,25 @@ export default function SimpleNoteListItemView(props) {
   const isTask = typeof numOfTasks === 'number' && numOfTasks > 0
 
   const handleClick = useCallback(
-    e => {
-      onClick && onClick(e, note)
+    (e: React.MouseEvent) => {
+      onClick?.(e, note)
       e.preventDefault()
       e.stopPropagation()
     },
     [onClick, note]
   )
   const handleDblClick = useCallback(
-    e => {
-      onDblClick && onDblClick(e, note)
+    (e: React.MouseEvent) => {
+      onDblClick?.(e, note)
       e.preventDefault()
       e.stopPropagation()
     },
     [onDblClick, note]
   )
   const handleMouseDown = useCallback(
-    e => {
+    (e: React.MouseEvent) => {
       if (e.button === 1) {
-        onMiddleClick && onMiddleClick(e, note)
+        onMiddleClick?.(e, note)
         e.preventDefault()
         e.stopPropagation()
       }
@@ -90,8 +115,8 @@ export default function SimpleNoteListItemView(props) {
     [onMiddleClick, note]
   )
   const handleContextMenu = useCallback(
-    e => {
-      onContextMenu && onContextMenu(e, note)
+    (e: React.MouseEvent) => {
+      onContextMenu?.(e, note)
       e.preventDefault()
     },
     [onContextMenu, note]
@@ -108,20 +133,13 @@ export default function SimpleNoteListItemView(props) {
       <div className="content">
         <div className="header">
           {_conflicts && (
-            <StreamlineIcon
-              name="warning-bold"
-              className="note-conflicted-icon inline"
-            />
+            <StreamlineIcon name="warning-bold" className="note-conflicted-icon inline" />
           )}
-          {pinned && (
-            <StreamlineIcon name="pin-bold" className="note-pin-icon inline" />
-          )}
+          {pinned && <StreamlineIcon name="pin-bold" className="note-pin-icon inline" />}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
           {ftsData ? (
-            <HighlightedText highlights={ftsData.titleHighlights}>
-              {title}
-            </HighlightedText>
+            <HighlightedText highlights={ftsData.titleHighlights}>{title}</HighlightedText>
           ) : (
             title
           )}
@@ -152,14 +170,14 @@ export default function SimpleNoteListItemView(props) {
 
 export function registerAsNoteListItemView() {
   inkdrop.components.registerClass(
-    SimpleNoteListItemView,
+    SimpleNoteListItemView as React.ComponentType,
     'CustomNoteListItemView'
   )
 }
 
 export function unregisterAsNoteListItemView() {
   inkdrop.components.deleteClass(
-    SimpleNoteListItemView.default,
+    SimpleNoteListItemView as React.ComponentType,
     'CustomNoteListItemView'
   )
 }

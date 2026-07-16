@@ -21,4 +21,3 @@ Then, reload the app.
 ## Changelog
 
 See the [GitHub releases](https://github.com/inkdropapp/inkdrop-simple-note-list/releases) for an overview of what changed in each update.
-
