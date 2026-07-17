@@ -26,6 +26,6 @@
     "typescript": "^7.0.2"
   },
   "engines": {
-    "inkdrop": "^5.11.2 || ^6.0.0"
+    "inkdrop": "^6.0.0"
   }
 }
