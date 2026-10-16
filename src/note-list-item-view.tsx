@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import type { NoteSearchHighlights } from '@inkdropapp/types'
 import type { Note, TemplateBookId } from 'inkdrop-model'
 import type React from 'react'
 import { useCallback } from 'react'
@@ -9,30 +10,17 @@ dayjs.extend(relativeTime)
 
 const TEMPLATE_BOOK_ID: TemplateBookId = 'template'
 
-interface HighlightMarkPosition {
-  offStart: number
-  offEnd: number
-  line: number
-  chStart: number
-  chEnd: number
-}
-
-interface NoteWithFtsData extends Note {
-  _fts?: {
-    titleHighlights: HighlightMarkPosition[]
-    bodyHighlights: HighlightMarkPosition[]
-  }
-}
-
 interface SimpleNoteListItemViewProps {
   listSortKey: string
-  note: NoteWithFtsData
+  note: Note
+  /** Where a keyword search matched the note's title and body */
+  highlights?: NoteSearchHighlights
   focused: boolean
   active: boolean
-  onClick?: (e: React.MouseEvent, note: NoteWithFtsData) => void
-  onMiddleClick?: (e: React.MouseEvent, note: NoteWithFtsData) => void
-  onDblClick?: (e: React.MouseEvent, note: NoteWithFtsData) => void
-  onContextMenu?: (e: React.MouseEvent, note: NoteWithFtsData) => void
+  onClick?: (e: React.MouseEvent, note: Note) => void
+  onMiddleClick?: (e: React.MouseEvent, note: Note) => void
+  onDblClick?: (e: React.MouseEvent, note: Note) => void
+  onContextMenu?: (e: React.MouseEvent, note: Note) => void
   onTagListItemClick?: (e: React.MouseEvent, tagId: string) => void
 }
 
@@ -52,6 +40,7 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
     active,
     focused,
     note,
+    highlights,
     onClick,
     onDblClick,
     onContextMenu,
@@ -73,7 +62,6 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
     pinned,
     _conflicts
   } = note
-  const ftsData = note._fts
   const isTemplate = bookId === TEMPLATE_BOOK_ID
 
   const classes = classNames({
@@ -144,8 +132,8 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
           {pinned && <StreamlineIcon name="pin-bold" className="note-pin-icon inline" />}
           <NoteStatusIcon status={status} />
           <NoteListItemShareStatusView visibility={share} />
-          {ftsData ? (
-            <HighlightedText highlights={ftsData.titleHighlights}>{title}</HighlightedText>
+          {highlights ? (
+            <HighlightedText highlights={highlights.titleHighlights}>{title}</HighlightedText>
           ) : (
             title
           )}
@@ -161,11 +149,11 @@ export default function SimpleNoteListItemView(props: SimpleNoteListItemViewProp
             )}
             <TagList tagIds={tags} onClickItem={onTagListItemClick} />
           </div>
-          {ftsData && (
+          {highlights && (
             <NoteListItemSummaryView
               revId={_rev || ''}
               body={body}
-              highlights={ftsData?.bodyHighlights}
+              highlights={highlights.bodyHighlights}
             />
           )}
         </div>
